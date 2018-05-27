@@ -19,7 +19,7 @@ function halfStepsToInterval(halfSteps) {
 function intervalBetween(midiKey0, midiKey1) {
   const distance = Math.abs(midiKey0 - midiKey1);
   return {
-    interval: halfStepsToInterval(distance),
+    name: halfStepsToInterval(distance),
     isCompound: distance >= 12,
     direction: midiKey0 > midiKey1 ? 'down' : 'up'
   };

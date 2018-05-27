@@ -41,7 +41,7 @@ class Keyboard extends Component {
       id: "qwertyHancock",
       width: 600,
       height: 150,
-      startNote: 'C5',
+      startNote: 'C4',
       octaves: 3
     });
 
