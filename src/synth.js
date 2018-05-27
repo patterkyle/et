@@ -44,6 +44,32 @@ class Synth {
       return (noteName !== soundingNote.noteName);
     });
   }
+
+  stopAll() {
+    for (const voice of this.voices) {
+      voice.triggerRelease();
+    }
+  }
+
+  setOscillator(oscillator) {
+    for (let i = 0; i < this.voiceCount; i++) {
+      this.voices[i].set({
+        'oscillator': { 'type': oscillator }
+      });
+    }
+  }
+
+  playRandomInterval(midiMin = 48, midiMax = 109) {
+    const randInt0 = Math.floor(Math.random() * (midiMax - midiMin)) + midiMin;
+    const freq0 = Tone.Midi(randInt0).toFrequency();
+
+    const randInt1 = Math.floor(Math.random() * (midiMax - midiMin)) + midiMin;
+    const freq1 = Tone.Midi(randInt1).toFrequency();
+
+    this.play(freq0);
+    this.play(freq1);
+    // return [randInt0, randInt1];
+  }
 }
 
 export { Synth };

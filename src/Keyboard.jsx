@@ -1,11 +1,39 @@
 import React, { Component } from 'react';
 import { QwertyHancock } from 'qwerty-hancock';
 import { Synth } from './synth';
+import './Keyboard.css';
+
+function OscillatorSelect(props) {
+  return (
+    <div className="OscillatorSelect">
+      <label>Oscillator: </label>
+      <select value={props.value}
+              onChange={(event: any) => props.onChange(event)}
+      >
+        <option value="sine">sine</option>
+        <option value="triangle">triangle</option>
+        <option value="sawtooth">sawtooth</option>
+        <option value="square">square</option>
+      </select>
+    </div>
+  );
+}
 
 class Keyboard extends Component {
   constructor(props) {
     super(props);
     this.synth = new Synth();
+    this.state = {
+      oscillator: 'triangle'
+    }
+  }
+
+  handleOscillatorChange(event) {
+    const newOsc= event.target.value;
+    this.synth.setOscillator(newOsc);
+    this.setState({
+      oscillator: newOsc
+    });
   }
 
   componentDidMount() {
@@ -30,6 +58,10 @@ class Keyboard extends Component {
     return (
       <div className="Keyboard">
         <div id="qwertyHancock" />
+        <OscillatorSelect
+          value={this.state.oscillator}
+          onChange={(event: any) => this.handleOscillatorChange(event)}
+        />
       </div>
     );
   }
