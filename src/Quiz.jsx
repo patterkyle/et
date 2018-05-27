@@ -42,57 +42,6 @@ function IntervalButtons(props) {
   );
 }
 
-class IntervalDisplay extends Component {
-  constructor(props) {
-    super();
-    this.props = props;
-    const [first, second] = props.midiKeys;
-    const { name, isCompound, direction } =
-      intervalBetween(first, second);
-
-    this.state = {
-      show: false,
-      text: 'show',
-      first: first,
-      second: second,
-      intervalName: name,
-      isCompound: isCompound,
-      direction: direction
-    };
-  }
-
-  render() {
-    return (
-      <div id="IntervalDisplay"
-           className="IntervalDisplay"
-      >
-        <IntervalButtons handleGuess={this.props.handleGuess} />
-        <button
-          id="IntervalDisplay-toggleButton"
-          type="button"
-          onClick={() => {
-              this.setState({
-                show: !this.state.show,
-                text: this.state.text === 'show' ? 'hide' : 'show'
-              });
-          }}
-        >
-          {this.state.text}
-        </button>
-        { this.state.show &&
-          <IntervalInfo
-            first={this.state.first}
-            second={this.state.second}
-            intervalName={this.state.intervalName}
-            isCompound={this.state.isCompound}
-            direction={this.state.direction}
-          />
-        }
-      </div>
-    );
-  }
-}
-
 function PlayButton(props) {
   return (
     <button className="PlayButton"
@@ -122,8 +71,12 @@ class Quiz extends Component {
     this.state = {
       midiKeys: midiKeys,
       intervalName: interval.name,
+      isCompound: interval.isCompound,
+      direction: interval.direction,
       noteLength: 2500,
       status: this.defaultStatus,
+      showAnswer: false,
+      toggleText: 'show',
       guess: null
     };
   }
@@ -133,19 +86,54 @@ class Quiz extends Component {
       <div className="Quiz">
         <PlayButton onClick={this.handlePlayButton} />
         <StatusLabel status={this.state.status} />
-        <IntervalDisplay
-          midiKeys={this.state.midiKeys}
-          handleGuess={this.handleGuess}
-        />
+        <IntervalButtons handleGuess={this.handleGuess} />
+        <button
+          id="toggleButton"
+          type="button"
+          onClick={() => {
+              this.setState({
+                showAnswer: !this.state.showAnswer,
+                toggleText: this.state.toggleText === 'show' ? 'hide' : 'show'
+              });
+          }}
+        >
+          {this.state.toggleText}
+        </button>
+        { this.state.showAnswer &&
+          <IntervalInfo
+            first={this.state.midiKeys[0]}
+            second={this.state.midiKeys[1]}
+            intervalName={this.state.intervalName}
+            isCompound={this.state.isCompound}
+            direction={this.state.direction}
+          />
+        }
+        <button
+          id="resetButton"
+          type="button"
+          onClick={this.reset}
+        >
+          reset
+        </button>
       </div>
     );
   }
 
+  reset = () => {
+    const midiKeys = this.randomMidiKeys();
+    const interval = intervalBetween.apply(null, midiKeys);
+    this.setState({
+      midiKeys: midiKeys,
+      intervalName: interval.name,
+      status: this.defaultStatus,
+      guess: null
+    });
+  }
+
   handleGuess = (guess) => {
     const guessInterval = halfStepsToIntervalName(guess);
-    const status = guessInterval === this.state.intervalName ?
-                   'whoo, you got it!' :
-                   'nope, try again!';
+    const isCorrect = guessInterval === this.state.intervalName;
+    const status = isCorrect? 'whoo, you got it!' : 'nope, try again!';
     this.setState({
       status: status,
       guess: guessInterval

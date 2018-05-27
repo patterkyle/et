@@ -60,7 +60,7 @@ class Keyboard extends Component {
         <div id="qwertyHancock" />
         <OscillatorSelect
           value={this.state.oscillator}
-          onChange={(event: any) => this.handleOscillatorChange(event)}
+          onChange={(event) => this.handleOscillatorChange(event)}
         />
       </div>
     );

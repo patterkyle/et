@@ -8,7 +8,16 @@
 
 .IntervalButton {
     margin-top: 1rem;
-    margin-bottom: 1rem;
     margin-right: 0.5rem;
     display: inline-block;
+}
+
+#resetButton {
+    margin-top: 1rem;
+    display: block;
+}
+
+#toggleButton {
+    margin-top: 1rem;
+    display: block;
 }
