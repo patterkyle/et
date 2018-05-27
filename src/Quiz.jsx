@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { randInt } from './util';
-import { halfStepsToInterval, intervalBetween } from './theory';
+import { halfStepsToIntervalName, intervalBetween } from './theory';
 
 import './Quiz.css';
 
@@ -18,12 +18,12 @@ function IntervalInfo(props) {
 function IntervalButton(props) {
   return (
     <div className="IntervalButton">
-    <button
-    type="button"
-    onClick={props.onClick}
-    >
-    {props.intervalName}
-    </button>
+      <button
+        type="button"
+        onClick={props.onClick}
+      >
+        {props.intervalName}
+      </button>
     </div>
   );
 }
@@ -31,13 +31,13 @@ function IntervalButton(props) {
 function IntervalButtons(props) {
   return (
     <div className="IntervalButtons">
-    {[...Array(12)].map((x, i) =>
-      <IntervalButton
-      key={i}
-      intervalName={halfStepsToInterval(i)}
-      onClick={() => {props.handleGuess(i)}}
-      />
-    )}
+      {[...Array(12)].map((x, i) =>
+        <IntervalButton
+          key={i}
+          intervalName={halfStepsToIntervalName(i)}
+          onClick={() => {props.handleGuess(i)}}
+        />
+      )}
     </div>
   );
 }
@@ -142,7 +142,7 @@ class Quiz extends Component {
   }
 
   handleGuess = (guess) => {
-    const guessInterval = halfStepsToInterval(guess);
+    const guessInterval = halfStepsToIntervalName(guess);
     const status = guessInterval === this.state.intervalName ?
                    'whoo, you got it!' :
                    'nope, try again!';

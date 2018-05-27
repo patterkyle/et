@@ -1,4 +1,4 @@
-function halfStepsToInterval(halfSteps) {
+function halfStepsToIntervalName(halfSteps) {
   const intervals = {
     0:  'P1',
     1:  'm2',
@@ -19,10 +19,10 @@ function halfStepsToInterval(halfSteps) {
 function intervalBetween(midiKey0, midiKey1) {
   const distance = Math.abs(midiKey0 - midiKey1);
   return {
-    name: halfStepsToInterval(distance),
+    name: halfStepsToIntervalName(distance),
     isCompound: distance >= 12,
     direction: midiKey0 > midiKey1 ? 'down' : 'up'
   };
 }
 
-export { halfStepsToInterval, intervalBetween };
+export { halfStepsToIntervalName, intervalBetween };
