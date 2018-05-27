@@ -2,7 +2,7 @@ import * as Tone from 'tone';
 
 class Synth {
   constructor() {
-    this.volume = 0.2;
+    this.volume = 0.4;
     this.soundingNotes = [];
     this.voiceCount = 12;
     this.nextVoice = 0;
@@ -28,21 +28,50 @@ class Synth {
     }
   }
 
+  playNotes(notes) {
+    for (const note of notes) {
+      this.play(note);
+    }
+  }
+
+  playMidi(midiKey) {
+    this.play(Tone.Midi(midiKey).toFrequency());
+  }
+
+  playMidiKeys(midiKeys) {
+    for (const midiKey of midiKeys) {
+      this.playMidi(midiKey);
+    }
+  }
+
   getVoice(noteName) {
     for (const soundingNote of this.soundingNotes) {
       if (noteName === soundingNote.noteName) {
         return soundingNote.voice;
       }
     }
-    return false;
+    return null;
   }
 
   stop(noteName) {
     const voice = this.getVoice(noteName);
+    if (voice == null) {
+      return;
+    }
     this.voices[voice].triggerRelease();
     this.soundingNotes = this.soundingNotes.filter(soundingNote => {
       return (noteName !== soundingNote.noteName);
     });
+  }
+
+  stopMidiKey(midiKey) {
+    this.stop(Tone.Midi(midiKey).toFrequency());
+  }
+
+  stopMidiKeys(midiKeys) {
+    for (const midiKey of midiKeys) {
+      this.stopMidiKey(midiKey);
+    }
   }
 
   stopAll() {
@@ -57,18 +86,6 @@ class Synth {
         'oscillator': { 'type': oscillator }
       });
     }
-  }
-
-  playRandomInterval(midiMin = 48, midiMax = 109) {
-    const randInt0 = Math.floor(Math.random() * (midiMax - midiMin)) + midiMin;
-    const freq0 = Tone.Midi(randInt0).toFrequency();
-
-    const randInt1 = Math.floor(Math.random() * (midiMax - midiMin)) + midiMin;
-    const freq1 = Tone.Midi(randInt1).toFrequency();
-
-    this.play(freq0);
-    this.play(freq1);
-    // return [randInt0, randInt1];
   }
 }
 

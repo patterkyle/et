@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { QwertyHancock } from 'qwerty-hancock';
-import { Synth } from './synth';
+
 import './Keyboard.css';
 
 function OscillatorSelect(props) {
   return (
     <div className="OscillatorSelect">
-      <label>Oscillator: </label>
+      <label>oscillator: </label>
       <select value={props.value}
               onChange={(event: any) => props.onChange(event)}
       >
@@ -22,7 +22,7 @@ function OscillatorSelect(props) {
 class Keyboard extends Component {
   constructor(props) {
     super(props);
-    this.synth = new Synth();
+    this.synth = props.synth;
     this.state = {
       oscillator: 'triangle'
     }
